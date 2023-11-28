@@ -24,6 +24,11 @@ const NavRoutes = ({
             label: "Billboard",
             active: pathname === `/${params.storeId}/billboards`
         },
+        {
+            href: `/${params.storeId}/categories`,
+            label: "Category",
+            active: pathname === `/${params.storeId}/categories`
+        }
     ]
   return (
     <nav className='mx-4 space-x-2'>

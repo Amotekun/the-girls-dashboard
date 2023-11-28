@@ -1,5 +1,6 @@
 "use client"
 
+import { AlertModal } from "@/components/modals/alert-modal"
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import Heading from "@/components/ui/heading"
@@ -8,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Billboard } from "@prisma/client"
 import axios from "axios"
+import { Trash } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
@@ -29,17 +31,20 @@ type BillboardForm = z.infer<typeof formSchema>
 const BillboardForm = ({
     initialData
 }: BillboardFormProps) => {
-    const [loading, setLoading] = useState(false)
-    const params = useParams()
-    const router = useRouter()
 
     const form = useForm<BillboardForm>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
+        defaultValues: initialData ||  {
             label: "",
             imageUrl: "",
         }
     })
+
+    const params = useParams()
+    const router = useRouter()
+
+    const [loading, setLoading] = useState(false)
+    const [open, setOpen] = useState(false)
 
     const title = initialData ? "Edit Billboard" : "Create Billboard"
     const description = initialData ? "Edit Billboard" : "Create Billboard";
@@ -50,7 +55,7 @@ const BillboardForm = ({
         try {
             setLoading(true)
             if(initialData) {
-
+                await axios.patch(`/api/${params.storeId}/billboards/${params.billboard}`, data);
             } else {
                 await axios.post(`/api/${params.storeId}/billboards`, data)
             }
@@ -64,23 +69,49 @@ const BillboardForm = ({
         }
     }
 
-    const onDelete = () => {
-
+    const onDelete = async () => {
+        try {
+            setLoading(true)
+            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`)
+            router.refresh()
+            router.push(`/${params.storeId}/billboards`)
+            toast.success("Store deleted")
+        } catch (error) {
+            toast.error("Something went wrong")
+        } finally {
+            setLoading(false)
+            setOpen(false)
+        }
     }
     
   return (
     <>
-        <div className="">
+        <AlertModal 
+            isOpen = {open}
+            onClose = {() => {setOpen(false)}}
+            onConfirm = {onDelete}
+            loading = {loading}
+        />
+        <div className="flex items-center justify-between">
             <Heading 
                 title={title}
                 description={description}
 
             />
-
+            {initialData && (
+                <Button 
+                    variant="destructive"
+                    size="icon"
+                    onClick={() => {setOpen(true)}}
+                >
+                    <Trash className="h-4 w-4" />
+                </Button>
+            )}
         </div>
+
         <Form {...form}>
             <form 
-                onSubmit={() => {}}
+                onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-8 w-full"
             >
                 <FormField 

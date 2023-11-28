@@ -4,7 +4,7 @@ interface DashBoardProps {
     params: {storeId: string}
 }
 
-const DashboardPage = async ({params}: DashBoardProps) => {
+const DashboardPage = ({params}: DashBoardProps) => {
     
     return (
         <div>
