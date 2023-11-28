@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { useParams, useRouter } from "next/navigation";
 import { CategoryColumn, columns } from "./columns";
 import { Plus } from "lucide-react";
+import { ApiList } from "@/components/ui/api-list";
 
 interface CategoryClientProps {
     data: CategoryColumn[];
@@ -39,6 +40,17 @@ const CategoryClient = ({
                 columns={columns}
                 data={data}
                 searchKey="name"
+            />
+            <Separator />
+            <Heading 
+                title = "API list"
+                description="Get your category data through API"
+            />
+            <ApiList 
+                entityName="categories"
+                entityIdName="categoryId"
+
+
             />
 
         </>

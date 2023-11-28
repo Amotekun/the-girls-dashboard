@@ -28,6 +28,11 @@ const NavRoutes = ({
             href: `/${params.storeId}/categories`,
             label: "Category",
             active: pathname === `/${params.storeId}/categories`
+        },
+        {
+            href: `/${params.storeId}/sizes`,
+            label: "Sizes",
+            active: pathname === `/${params.storeId}/sizes`
         }
     ]
   return (
