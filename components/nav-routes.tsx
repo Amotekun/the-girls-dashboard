@@ -33,6 +33,21 @@ const NavRoutes = ({
             href: `/${params.storeId}/sizes`,
             label: "Sizes",
             active: pathname === `/${params.storeId}/sizes`
+        },
+        {
+            href: `/${params.storeId}/colors`,
+            label: "Colors",
+            active: pathname === `/${params.storeId}/Colors`
+        },
+        {
+            href: `/${params.storeId}/products`,
+            label: "Products",
+            active: pathname === `${params.storeId}/products`
+        },
+        {
+            href: `/${params.storeId}/settings`,
+            label: "Settings",
+            active: pathname === `/${params.storeId}/settings`
         }
     ]
   return (
